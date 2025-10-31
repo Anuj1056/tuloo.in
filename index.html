@@ -1,0 +1,804 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Tuloo.in — Book Services</title>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#f5f7fb; --card:#fff; --muted:#6b7280;
+    --g1:#6a11cb; --g2:#2575fc; --accent:#ff8a00;
+    --btn-gradient: linear-gradient(90deg,var(--g1),var(--g2));
+  }
+  *{box-sizing:border-box}
+  body{margin:0;font-family:'Poppins',sans-serif;background:var(--bg);color:#111}
+  header{background:var(--btn-gradient);color:#fff;padding:18px 28px;display:flex;align-items:center;justify-content:space-between}
+  header h1{margin:0;font-size:20px;letter-spacing:0.3px}
+  nav{display:flex;gap:10px}
+  nav a{color:#fff;text-decoration:none;font-weight:600;padding:8px 16px;border-radius:999px;background:linear-gradient(90deg,#ea4335,#4285f4)}
+  .hero{padding:56px 24px;text-align:center;background:linear-gradient(180deg, rgba(106,17,203,0.06), rgba(37,117,252,0.04));}
+  .hero h2{font-size:28px;margin:6px 0 8px}
+  .hero p{color:var(--muted);margin:0 0 18px}
+  .typing{font-size:20px;font-weight:600;background:linear-gradient(90deg,#6a11cb,#2575fc);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin:20px 0;text-align:center;min-height:60px;white-space:nowrap;overflow:hidden}
+  .btn-primary{background:var(--btn-gradient);color:#fff;padding:10px 18px;border-radius:999px;border:none;cursor:pointer;font-weight:700;box-shadow:0 8px 30px rgba(99,102,241,0.12)}
+  .slideshow{position:relative;width:100%;max-width:600px;margin:20px auto 20px;border-radius:12px;overflow:hidden;box-shadow:0 4px 12px rgba(0,0,0,0.1);height:300px}
+  .slideshow img{position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;opacity:0;animation:slideshow 9s infinite}
+  .slideshow img:nth-child(1){animation-delay:0s}
+  .slideshow img:nth-child(2){animation-delay:3s}
+  .slideshow img:nth-child(3){animation-delay:6s}
+  @keyframes slideshow{0%,33.33%{opacity:1}33.34%,66.66%{opacity:0}100%{opacity:0}}
+  .hero .description-overlay{position:absolute;bottom:20px;left:50%;transform:translateX(-50%);background:rgba(255,255,255,0.9);color:#1a37f1;padding:20px;border-radius:8px;max-width:80%;text-align:center;z-index:1}
+  .container{max-width:1150px;margin:28px auto;padding:0 20px}
+  .services-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1px}
+
+  .service-section{margin-bottom:40px}
+  .service-section h3{margin:0 0 16px;color:#111;font-size:18px;text-align:center}
+  .service-card{background:linear-gradient(135deg,var(--card) 0%,#f9fafb 100%);padding:16px;border-radius:16px;box-shadow:0 8px 22px rgba(10,14,26,0.06);display:flex;flex-direction:column;justify-content:space-between;min-height:120px;position:relative;overflow:hidden;transition:transform .3s ease,box-shadow .3s ease;opacity:0;animation:fadeInUp 0.6s ease forwards}
+  .service-card:hover{transform:translateY(-8px);box-shadow:0 16px 40px rgba(10,14,26,0.15)}
+  .service-card .icon{font-size:24px;margin-bottom:8px;text-align:center}
+  .service-card h4{margin:0 0 6px;font-size:16px;text-align:center}
+  .service-card p{margin:0;color:var(--muted);font-size:13px;text-align:center;flex-grow:1}
+  .book-btn{margin-top:14px;padding:10px 14px;border-radius:999px;border:0;background:linear-gradient(45deg,#ff7a18,#e52e71);color:#fff;font-weight:700;cursor:pointer;transition:transform .22s,box-shadow .22s}
+  .book-btn:hover{transform:translateY(-4px);box-shadow:0 12px 30px rgba(229,46,113,0.12)}
+  @keyframes fadeInUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+  .slide-up{opacity:0;transform:translateY(50px);transition:opacity 0.8s ease-out,transform 0.8s ease-out}
+  .slide-up.animate{opacity:1;transform:translateY(0)}
+
+  /* bubbling effect on all book buttons */
+  .book-btn::after{
+    content:'';position:absolute;width:10px;height:10px;border-radius:50%;right:18px;top:12px;box-shadow:0 0 30px rgba(255,122,24,0.4);opacity:0.9;transform:scale(1);animation: bubble 2.6s infinite;
+  }
+  @keyframes bubble{0%{transform:translateY(0) scale(0.95)}50%{transform:translateY(-6px) scale(1.08)}100%{transform:translateY(0) scale(0.95)}}
+
+  /* popup overlay */
+  .overlay{position:fixed;inset:0;display:none;background:rgba(0,0,0,0.6);align-items:center;justify-content:center;z-index:9999;padding:18px}
+  .modal{width:100%;max-width:520px;background:var(--card);border-radius:14px;padding:22px;box-shadow:0 20px 60px rgba(2,6,23,0.3);position:relative}
+  .modal h3{margin:0 0 8px;color:var(--g1)}
+  .close{position:absolute;right:14px;top:12px;border:0;background:none;font-weight:700;font-size:18px;cursor:pointer;color:#555}
+  .form-row{display:flex;gap:10px}
+  .form-row .col{flex:1}
+  input,select,textarea{width:100%;padding:10px;border-radius:8px;border:1px solid #e6e9ef;margin-top:8px;font-size:14px}
+  textarea{resize:vertical;min-height:86px}
+  .submit-btn{margin-top:12px;width:100%;padding:12px;background:var(--btn-gradient);color:#fff;border:0;border-radius:10px;font-weight:700;cursor:pointer}
+  .small{font-size:13px;color:var(--muted);margin-top:8px;text-align:center}
+
+  /* success message */
+  .success-msg{display:none;padding:14px;border-radius:10px;background:linear-gradient(90deg,#e6fffa,#f0f9ff);color:#033; margin-top:12px;text-align:center}
+
+  footer{padding:24px;border-top:1px solid #eef2f7;margin-top:40px;text-align:center;color:var(--muted)}
+  @media (max-width:600px){.hero h2{font-size:22px}}
+</style>
+</head>
+<body>
+
+<header>
+  <img src="logo.png" alt="tuloo.in logo: colorful stylized lowercase text tuloo.in with floral accents and a gradient from orange through green to blue, placed for website header on a transparent background; text reads tuloo.in; tone is vibrant and cheerful, signaling a friendly service booking brand" style="height: 200px;width:auto;">
+  <nav>
+    <a href="#home">Home</a>
+    <a href="#services">Services</a>
+
+  </nav>
+</header>
+
+<section class="hero" id="home">
+  <div class="container">
+    <h2>Book services instantly — Sports, Events & Home Services</h2>
+    <div class="typing" id="typing-text"></div>
+    <p>Choose a service below and click <strong>Book Now</strong>. Fill the quick form — we will get back to you. (Emails go to teamtuloo@gmail.com)</p>
+    <div class="slideshow">
+      <img src="hamepage animation1.jpg" alt="Homepage Animation 1">
+      <img src="homepage animation2 .jpg" alt="Homepage Animation 2">
+      <img src="homepage animation3.jpg" alt="Homepage Animation 3">
+      <div class="description-overlay">Book your services instantly!</div>
+    </div>
+    <button class="btn-primary" id="openAny">Book Any Service</button>
+  </div>
+</section>
+
+<main class="container">
+  <section id="services">
+    <h3 style="margin:0 0 12px;color:#111">Our Services</h3>
+    <div id="servicesContainer">
+      <!-- JavaScript will inject categorized service sections here -->
+    </div>
+  </section>
+
+  <!-- stats & reviews (kept simple) -->
+  <section style="margin-top:28px">
+    <div style="display:flex;gap:14px;flex-wrap:wrap;align-items:center;justify-content:center">
+      <div style="background:linear-gradient(90deg,#2575fc,#6a11cb);padding:18px;border-radius:12px;color:#fff;min-width:160px;text-align:center">
+        <div style="font-weight:800;font-size:20px">100+</div><div style="opacity:0.9">Live Projects</div>
+      </div>
+      <button id="openReviews" style="background:linear-gradient(90deg,#6a11cb,#2575fc);padding:18px;border-radius:12px;color:#fff;min-width:160px;text-align:center;border:none;cursor:pointer;font-weight:800;font-size:20px">
+        <div>500+</div><div style="opacity:0.9;font-size:14px">Happy Clients</div>
+      </button>
+      <div style="background:linear-gradient(90deg,#ff8a00,#e52e71);padding:18px;border-radius:12px;color:#fff;min-width:160px;text-align:center">
+        <div style="font-weight:800;font-size:20px">5.0★</div><div style="opacity:0.9">Customer Rating</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Testimonials Section -->
+  <section style="margin-top:40px">
+    <h3 style="text-align:center;margin-bottom:20px;color:#111">What Our Customers Say</h3>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:20px">
+      <div style="background:var(--card);padding:20px;border-radius:12px;box-shadow:0 4px 12px rgba(0,0,0,0.1);text-align:center">
+        <div style="font-size:24px;margin-bottom:10px">⭐⭐⭐⭐⭐</div>
+        <p style="color:var(--muted);margin:10px 0">"Tuloo.in made booking my wedding planner so easy! The service was top-notch and exactly what I needed."</p>
+        <div style="font-weight:600">- Priya Sharma</div>
+      </div>
+      <div style="background:var(--card);padding:20px;border-radius:12px;box-shadow:0 4px 12px rgba(0,0,0,0.1);text-align:center">
+        <div style="font-size:24px;margin-bottom:10px">⭐⭐⭐⭐⭐</div>
+        <p style="color:var(--muted);margin:10px 0">"Hired an electrician through Tuloo.in for my home. Professional, punctual, and affordable. Highly recommend!"</p>
+        <div style="font-weight:600">- Rajesh Kumar</div>
+      </div>
+      <div style="background:var(--card);padding:20px;border-radius:12px;box-shadow:0 4px 12px rgba(0,0,0,0.1);text-align:center">
+        <div style="font-size:24px;margin-bottom:10px">⭐⭐⭐⭐⭐</div>
+        <p style="color:var(--muted);margin:10px 0">"The website development service was outstanding. My business site looks amazing and functions perfectly."</p>
+        <div style="font-weight:600">- Anjali Patel</div>
+      </div>
+      <div style="background:var(--card);padding:20px;border-radius:12px;box-shadow:0 4px 12px rgba(0,0,0,0.1);text-align:center">
+        <div style="font-size:24px;margin-bottom:10px">⭐⭐⭐⭐⭐</div>
+        <p style="color:var(--muted);margin:10px 0">"Booked a DJ for my party through Tuloo.in. The response was instant, and the service exceeded expectations!"</p>
+        <div style="font-weight:600">- Vikram Singh</div>
+      </div>
+      <div style="background:var(--card);padding:20px;border-radius:12px;box-shadow:0 4px 12px rgba(0,0,0,0.1);text-align:center">
+        <div style="font-size:24px;margin-bottom:10px">⭐⭐⭐⭐⭐</div>
+        <p style="color:var(--muted);margin:10px 0">"Tuloo.in helped me find a reliable plumber quickly. Great platform for all service needs!"</p>
+        <div style="font-weight:600">- Meera Joshi</div>
+      </div>
+      <div style="background:var(--card);padding:20px;border-radius:12px;box-shadow:0 4px 12px rgba(0,0,0,0.1);text-align:center">
+        <div style="font-size:24px;margin-bottom:10px">⭐⭐⭐⭐⭐</div>
+        <p style="color:var(--muted);margin:10px 0">"The makeup artist I booked was fantastic. Perfect for my special occasion. Thanks Tuloo.in!"</p>
+        <div style="font-weight:600">- Kavita Rao</div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<!-- Popup / modal -->
+<div class="overlay" id="overlay" aria-hidden="true">
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <button class="close" id="closeBtn">&times;</button>
+    <h3 id="modalTitle">Book Service</h3>
+    <p style="margin:0;color:var(--muted)">Please share basic details — we'll contact you soon.</p>
+
+    <!-- Using JS fetch to POST to Web3Forms API so we can show success and also open WhatsApp link -->
+    <form id="bookingForm">
+      <!-- Web3Forms access key -->
+      <input type="hidden" name="access_key" value="487899d0-c040-489e-9728-5272dc4f0e3b">
+      <!-- optional: specify email recipient override (Web3Forms supports), but default will send to account's email -->
+      <!-- put hidden subject too -->
+      <input type="hidden" name="subject" value="Tuloo.in - New Booking">
+
+      <label class="small" style="display:block;margin-top:10px">Service</label>
+      <input id="serviceField" name="service" type="text" readonly required />
+
+      <div class="form-row" style="margin-top:8px">
+        <div class="col"><label class="small">Name</label><input name="name" type="text" placeholder="Your full name" required></div>
+        <div class="col"><label class="small">Phone</label><input name="phone" type="tel" placeholder="+91 98xxxxxx" required></div>
+      </div>
+
+      <label class="small" style="display:block;margin-top:8px">Email</label>
+      <input name="email" type="email" placeholder="your@email.com" required>
+
+      <label class="small" style="display:block;margin-top:8px">Message / Details</label>
+      <textarea name="message" placeholder="Any extra details (date, time, location)..."></textarea>
+
+      <button class="submit-btn" type="submit">Send Booking </button>
+
+      <div class="success-msg" id="successMsg">Thank you! We received your request — we'll contact you soon.</div>
+      <p class="small">By submitting you agree to be contacted by Tuloo.in. Contact: <strong>teamtuloo@gmail.com</strong></p>
+    </form>
+  </div>
+</div>
+
+<!-- Career Popup / modal -->
+<div class="overlay" id="careerOverlay" aria-hidden="true">
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="careerModalTitle">
+    <button class="close" id="careerCloseBtn">&times;</button>
+    <h3 id="careerModalTitle">Career Application</h3>
+    <p style="margin:0;color:var(--muted)">Join our team — share your details and we'll get back to you.</p>
+
+    <form id="careerForm">
+      <!-- Web3Forms access key -->
+      <input type="hidden" name="access_key" value="487899d0-c040-489e-9728-5272dc4f0e3b">
+      <input type="hidden" name="subject" value="Tuloo.in - Career Application">
+
+      <div class="form-row" style="margin-top:8px">
+        <div class="col"><label class="small">Name</label><input name="name" type="text" placeholder="Your full name" required></div>
+        <div class="col"><label class="small">Contact (Phone)</label><input name="phone" type="tel" placeholder="+91 98xxxxxx" required></div>
+      </div>
+
+      <label class="small" style="display:block;margin-top:8px">Email</label>
+      <input name="email" type="email" placeholder="your@email.com" required>
+
+      <label class="small" style="display:block;margin-top:8px">Education or Skill</label>
+      <input name="education_skill" type="text" placeholder="e.g., Bachelor's in Computer Science, Web Development" required>
+
+      <label class="small" style="display:block;margin-top:8px">Degree or Certificate</label>
+      <input name="degree_certificate" type="text" placeholder="e.g., B.Tech, Certified Trainer" required>
+
+      <label class="small" style="display:block;margin-top:8px">Address</label>
+      <textarea name="address" placeholder="Your full address" required></textarea>
+
+      <button class="submit-btn" type="submit">Submit Application</button>
+
+      <div class="success-msg" id="careerSuccessMsg">Thank you! We received your application — we'll contact you soon.</div>
+      <p class="small">By submitting you agree to be contacted by Tuloo.in. Contact: <strong>8051297154</strong></p>
+    </form>
+  </div>
+</div>
+
+<!-- Reviews Popup / modal -->
+<div class="overlay" id="reviewsOverlay" aria-hidden="true">
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="reviewsModalTitle">
+    <button class="close" id="reviewsCloseBtn">&times;</button>
+    <h3 id="reviewsModalTitle">Customer Reviews</h3>
+    <p style="margin:0;color:var(--muted)">See what our happy clients say about us!</p>
+
+    <div style="max-height:400px;overflow-y:auto;margin-top:16px" id="reviewsList">
+      <div style="background:var(--card);padding:16px;border-radius:8px;margin-bottom:12px;box-shadow:0 2px 8px rgba(0,0,0,0.1)">
+        <div style="font-size:18px;margin-bottom:8px">⭐⭐⭐⭐⭐</div>
+        <p style="color:var(--muted);margin:8px 0">"Tuloo.in made booking my wedding planner so easy! The service was top-notch and exactly what I needed."</p>
+        <div style="font-weight:600">- Priya Sharma</div>
+      </div>
+      <div style="background:var(--card);padding:16px;border-radius:8px;margin-bottom:12px;box-shadow:0 2px 8px rgba(0,0,0,0.1)">
+        <div style="font-size:18px;margin-bottom:8px">⭐⭐⭐⭐⭐</div>
+        <p style="color:var(--muted);margin:8px 0">"Hired an electrician through Tuloo.in for my home. Professional, punctual, and affordable. Highly recommend!"</p>
+        <div style="font-weight:600">- Rajesh Kumar</div>
+      </div>
+      <div style="background:var(--card);padding:16px;border-radius:8px;margin-bottom:12px;box-shadow:0 2px 8px rgba(0,0,0,0.1)">
+        <div style="font-size:18px;margin-bottom:8px">⭐⭐⭐⭐⭐</div>
+        <p style="color:var(--muted);margin:8px 0">"The website development service was outstanding. My business site looks amazing and functions perfectly."</p>
+        <div style="font-weight:600">- Anjali Patel</div>
+      </div>
+      <div style="background:var(--card);padding:16px;border-radius:8px;margin-bottom:12px;box-shadow:0 2px 8px rgba(0,0,0,0.1)">
+        <div style="font-size:18px;margin-bottom:8px">⭐⭐⭐⭐⭐</div>
+        <p style="color:var(--muted);margin:8px 0">"Booked a DJ for my party through Tuloo.in. The response was instant, and the service exceeded expectations!"</p>
+        <div style="font-weight:600">- Vikram Singh</div>
+      </div>
+      <div style="background:var(--card);padding:16px;border-radius:8px;margin-bottom:12px;box-shadow:0 2px 8px rgba(0,0,0,0.1)">
+        <div style="font-size:18px;margin-bottom:8px">⭐⭐⭐⭐⭐</div>
+        <p style="color:var(--muted);margin:8px 0">"Tuloo.in helped me find a reliable plumber quickly. Great platform for all service needs!"</p>
+        <div style="font-weight:600">- Meera Joshi</div>
+      </div>
+      <div style="background:var(--card);padding:16px;border-radius:8px;margin-bottom:12px;box-shadow:0 2px 8px rgba(0,0,0,0.1)">
+        <div style="font-size:18px;margin-bottom:8px">⭐⭐⭐⭐⭐</div>
+        <p style="color:var(--muted);margin:8px 0">"The makeup artist I booked was fantastic. Perfect for my special occasion. Thanks Tuloo.in!"</p>
+        <div style="font-weight:600">- Kavita Rao</div>
+      </div>
+      <div style="background:var(--card);padding:16px;border-radius:8px;margin-bottom:12px;box-shadow:0 2px 8px rgba(0,0,0,0.1)">
+        <div style="font-size:18px;margin-bottom:8px">⭐⭐⭐⭐⭐</div>
+        <p style="color:var(--muted);margin:8px 0">"Excellent service for home cleaning. The team was thorough and friendly."</p>
+        <div style="font-weight:600">- Rohan Gupta</div>
+      </div>
+      <div style="background:var(--card);padding:16px;border-radius:8px;margin-bottom:12px;box-shadow:0 2px 8px rgba(0,0,0,0.1)">
+        <div style="font-size:18px;margin-bottom:8px">⭐⭐⭐⭐⭐</div>
+        <p style="color:var(--muted);margin:8px 0">"Booked a photographer for my event. The photos turned out amazing!"</p>
+        <div style="font-weight:600">- Sneha Verma</div>
+      </div>
+    </div>
+
+    <button class="submit-btn" id="leaveReviewBtn">Leave a Review</button>
+    <a href="https://share.google/7r2plvyByJQyu8rto" target="_blank" class="submit-btn" style="display:block;margin-top:12px;text-decoration:none;text-align:center;">Map Review</a>
+  </div>
+</div>
+
+<!-- Leave Review Popup / modal -->
+<div class="overlay" id="leaveReviewOverlay" aria-hidden="true">
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="leaveReviewModalTitle">
+    <button class="close" id="leaveReviewCloseBtn">&times;</button>
+    <h3 id="leaveReviewModalTitle">Leave a Review</h3>
+    <p style="margin:0;color:var(--muted)">Share your experience with us!</p>
+
+    <form id="leaveReviewForm">
+      <!-- Web3Forms access key -->
+      <input type="hidden" name="access_key" value="487899d0-c040-489e-9728-5272dc4f0e3b">
+      <input type="hidden" name="subject" value="Tuloo.in - New Review">
+
+      <label class="small" style="display:block;margin-top:10px">Name</label>
+      <input name="name" type="text" placeholder="Your full name" required>
+
+      <label class="small" style="display:block;margin-top:8px">Service</label>
+      <select name="service" required>
+        <option value="">Select a service</option>
+        <option value="Sports Event">Sports Event</option>
+        <option value="DJ & Music">DJ & Music</option>
+        <option value="Catering">Catering</option>
+        <option value="Photography">Photography</option>
+        <option value="Website Development">Website Development</option>
+        <option value="Mobile App Development">Mobile App Development</option>
+        <option value="Makeup & Styling">Makeup & Styling</option>
+        <option value="Cleaning & Maintenance">Cleaning & Maintenance</option>
+        <option value="Fitness & Yoga Trainer">Fitness & Yoga Trainer</option>
+        <option value="Decoration & Event Planning">Decoration & Event Planning</option>
+        <option value="Electrician">Electrician</option>
+        <option value="Plumbing">Plumbing</option>
+        <option value="AC Repair & Service">AC Repair & Service</option>
+        <option value="Salon at Home">Salon at Home</option>
+        <option value="Painting & Home Design">Painting & Home Design</option>
+        <option value="Pest Control">Pest Control</option>
+        <option value="Car Wash & Detailing">Car Wash & Detailing</option>
+        <option value="Appliance Repair">Appliance Repair</option>
+        <option value="Wedding Planner">Wedding Planner</option>
+        <option value="Birthday Party Organizer">Birthday Party Organizer</option>
+        <option value="Home Deep Cleaning">Home Deep Cleaning</option>
+        <option value="Computer & Laptop Repair">Computer & Laptop Repair</option>
+        <option value="CCTV Installation">CCTV Installation</option>
+        <option value="Interior Design">Interior Design</option>
+        <option value="Outdoor Sports Ground Booking">Outdoor Sports Ground Booking</option>
+        <option value="Corporate Event Management">Corporate Event Management</option>
+        <option value="Graphic Design">Graphic Design</option>
+        <option value="Video Editing & Production">Video Editing & Production</option>
+        <option value="Content Writing">Content Writing</option>
+        <option value="Social Media Marketing">Social Media Marketing</option>
+        <option value="Digital Advertisement">Digital Advertisement</option>
+        <option value="Pet Care & Grooming">Pet Care & Grooming</option>
+        <option value="Mehndi Artist">Mehndi Artist</option>
+        <option value="Hair Styling & Spa">Hair Styling & Spa</option>
+        <option value="Tattoo Artist">Tattoo Artist</option>
+        <option value="Laundry & Dry Cleaning">Laundry & Dry Cleaning</option>
+        <option value="Carpenter">Carpenter</option>
+        <option value="Construction & Renovation">Construction & Renovation</option>
+        <option value="Driver on Call">Driver on Call</option>
+        <option value="Tour & Travel Booking">Tour & Travel Booking</option>
+        <option value="House Shifting & Packers Movers">House Shifting & Packers Movers</option>
+        <option value="Security Guard Service">Security Guard Service</option>
+        <option value="Financial Consultant">Financial Consultant</option>
+        <option value="Legal & Documentation Help">Legal & Documentation Help</option>
+        <option value="Online Tuition & Coaching">Online Tuition & Coaching</option>
+        <option value="Music Band for Event">Music Band for Event</option>
+        <option value="Flower Decoration">Flower Decoration</option>
+        <option value="Sound & Lighting Setup">Sound & Lighting Setup</option>
+        <option value="Catering for Wedding / Party">Catering for Wedding / Party</option>
+      </select>
+
+      <label class="small" style="display:block;margin-top:8px">Rating</label>
+      <div style="display:flex;gap:5px;margin-top:8px">
+        <input type="radio" id="star5" name="rating" value="5" required><label for="star5">⭐⭐⭐⭐⭐</label>
+        <input type="radio" id="star4" name="rating" value="4"><label for="star4">⭐⭐⭐⭐</label>
+        <input type="radio" id="star3" name="rating" value="3"><label for="star3">⭐⭐⭐</label>
+        <input type="radio" id="star2" name="rating" value="2"><label for="star2">⭐⭐</label>
+        <input type="radio" id="star1" name="rating" value="1"><label for="star1">⭐</label>
+      </div>
+
+      <label class="small" style="display:block;margin-top:8px">Description</label>
+      <textarea name="description" placeholder="Tell us about your experience..." required></textarea>
+
+      <button class="submit-btn" type="submit">Submit Review</button>
+
+      <div class="success-msg" id="leaveReviewSuccessMsg">Thank you! Your review has been submitted.</div>
+      <p class="small">By submitting you agree to be contacted by Tuloo.in. Contact: <strong>teamtuloo@gmail.com</strong></p>
+    </form>
+  </div>
+</div>
+
+<footer>
+  <div style="max-width:1000px;margin:0 auto;padding:8px 20px">
+    <div style="display:flex;gap:10px;margin-bottom:10px">
+      <a href="#" id="openCareer" style="background:var(--btn-gradient);color:#fff;padding:8px 16px;border-radius:999px;text-decoration:none;font-weight:600">Career</a>
+      <a href="https://wa.me/918051297154" target="_blank" rel="noopener" style="background:var(--btn-gradient);color:#fff;padding:8px 16px;border-radius:999px;text-decoration:none;font-weight:600">WhatsApp Us</a>
+      <a href="mailto:teamtuloo@gmail.com" style="background:linear-gradient(90deg,#ea4335,#4285f4);color:#fff;padding:8px 16px;border-radius:999px;text-decoration:none;font-weight:600">Email Us</a>
+      <a href="https://share.google/7r2plvyByJQyu8rto" target="_blank" rel="noopener" style="background:linear-gradient(90deg,#ff8a00,#e52e71);color:#fff;padding:8px 16px;border-radius:999px;text-decoration:none;font-weight:600">Review on Map</a>
+    </div>
+    <div style="color:var(--muted)">All Rights Reserved © Team Tuloo.in 2025</div>
+    <div style="color:var(--muted)">Founder Mr.Nitesh Jha</div>
+  </div>
+</footer>
+
+<script>
+/*
+  DATA & BEHAVIOR:
+  - servicesList: 50 service names
+  - clicking any Book Now opens popup + fills service input
+  - form submit uses fetch() to POST to Web3Forms API endpoint
+  - on success:
+      1) show success message,
+      2) open WhatsApp web (wa.me) in new tab with auto-generated message (user needs to send)
+      3) close popup after a short delay
+  NOTE: Web3Forms access_key already provided in hidden field.
+*/
+
+const servicesList = [
+  "Sports Event",
+  "DJ & Music",
+  "Catering",
+  "Photography",
+  "Website Development",
+  "Mobile App Development",
+  "Makeup & Styling",
+  "Cleaning & Maintenance",
+  "Fitness & Yoga Trainer",
+  "Decoration & Event Planning",
+  "Electrician",
+  "Plumbing",
+  "AC Repair & Service",
+  "Salon at Home",
+  "Painting & Home Design",
+  "Pest Control",
+  "Car Wash & Detailing",
+  "Appliance Repair",
+  "Wedding Planner",
+  "Birthday Party Organizer",
+  "Home Deep Cleaning",
+  "Computer & Laptop Repair",
+  "CCTV Installation",
+  "Interior Design",
+  "Outdoor Sports Ground Booking",
+  "Corporate Event Management",
+  "Graphic Design",
+  "Video Editing & Production",
+  "Content Writing",
+  "Social Media Marketing",
+  "Digital Advertisement",
+  "Pet Care & Grooming",
+  "Mehndi Artist",
+  "Hair Styling & Spa",
+  "Tattoo Artist",
+  "Laundry & Dry Cleaning",
+  "Carpenter",
+  "Construction & Renovation",
+  "Driver on Call",
+  "Tour & Travel Booking",
+  "House Shifting & Packers Movers",
+  "Security Guard Service",
+  "Financial Consultant",
+  "Legal & Documentation Help",
+  "Online Tuition & Coaching",
+  "Music Band for Event",
+  "Flower Decoration",
+  "Sound & Lighting Setup",
+  "Catering for Wedding / Party"
+];
+
+// Categorized services with icons
+const categorizedServices = {
+  "Event Services": [
+    { name: "Sports Event", icon: "🏆" },
+    { name: "DJ & Music", icon: "🎵" },
+    { name: "Catering", icon: "🍽️" },
+    { name: "Photography", icon: "📸" },
+    { name: "Wedding Planner", icon: "💒" },
+    { name: "Birthday Party Organizer", icon: "🎂" },
+    { name: "Corporate Event Management", icon: "🏢" },
+    { name: "Music Band for Event", icon: "🎶" },
+    { name: "Flower Decoration", icon: "🌸" },
+    { name: "Sound & Lighting Setup", icon: "🔊" },
+    { name: "Catering for Wedding / Party", icon: "🍛" },
+    { name: "Decoration & Event Planning", icon: "🎉" }
+  ],
+  "Home Services": [
+    { name: "Cleaning & Maintenance", icon: "🧹" },
+    { name: "Electrician", icon: "⚡" },
+    { name: "Plumbing", icon: "🔧" },
+    { name: "AC Repair & Service", icon: "❄️" },
+    { name: "Painting & Home Design", icon: "🎨" },
+    { name: "Pest Control", icon: "🐛" },
+    { name: "Appliance Repair", icon: "🔨" },
+    { name: "Home Deep Cleaning", icon: "🧽" },
+    { name: "Interior Design", icon: "🏠" },
+    { name: "Carpenter", icon: "🔨" },
+    { name: "Construction & Renovation", icon: "🏗️" }
+  ],
+  "Tech & Digital Services": [
+    { name: "Website Development", icon: "💻" },
+    { name: "Mobile App Development", icon: "📱" },
+    { name: "Computer & Laptop Repair", icon: "🖥️" },
+    { name: "CCTV Installation", icon: "📹" },
+    { name: "Graphic Design", icon: "🎨" },
+    { name: "Video Editing & Production", icon: "🎥" },
+    { name: "Content Writing", icon: "✍️" },
+    { name: "Social Media Marketing", icon: "📈" },
+    { name: "Digital Advertisement", icon: "📢" }
+  ],
+  "Personal & Lifestyle Services": [
+    { name: "Makeup & Styling", icon: "💄" },
+    { name: "Fitness & Yoga Trainer", icon: "🏋️" },
+    { name: "Salon at Home", icon: "💇" },
+    { name: "Pet Care & Grooming", icon: "🐕" },
+    { name: "Mehndi Artist", icon: "🖐️" },
+    { name: "Hair Styling & Spa", icon: "💆" },
+    { name: "Tattoo Artist", icon: "🖼️" },
+    { name: "Laundry & Dry Cleaning", icon: "👔" }
+  ],
+  "Transportation & Travel": [
+    { name: "Car Wash & Detailing", icon: "🚗" },
+    { name: "Driver on Call", icon: "🚕" },
+    { name: "Tour & Travel Booking", icon: "✈️" },
+    { name: "House Shifting & Packers Movers", icon: "📦" }
+  ],
+  "Professional Services": [
+    { name: "Security Guard Service", icon: "🛡️" },
+    { name: "Financial Consultant", icon: "💼" },
+    { name: "Legal & Documentation Help", icon: "⚖️" },
+    { name: "Online Tuition & Coaching", icon: "📚" },
+    { name: "Outdoor Sports Ground Booking", icon: "⚽" }
+  ]
+};
+
+// Populate categorized services
+const container = document.getElementById('servicesContainer');
+let delay = 0;
+Object.entries(categorizedServices).forEach(([category, services]) => {
+  const section = document.createElement('div');
+  section.className = 'service-section';
+  section.innerHTML = `<h3>${category}</h3><div class="services-grid"></div>`;
+  const grid = section.querySelector('.services-grid');
+  services.forEach((service, idx) => {
+    const card = document.createElement('div');
+    card.className = 'service-card';
+    card.style.animationDelay = `${delay}s`;
+    delay += 0.1;
+    card.innerHTML = `
+      <div>
+        <div class="icon">${service.icon}</div>
+        <h4>${service.name}</h4>
+        <p>Professional & verified — book now for instant response.</p>
+      </div>
+      <button class="book-btn" data-service="${service.name}" type="button">Book Now</button>
+    `;
+    grid.appendChild(card);
+  });
+  container.appendChild(section);
+});
+
+// Popup controls
+const overlay = document.getElementById('overlay');
+const closeBtn = document.getElementById('closeBtn');
+const serviceField = document.getElementById('serviceField');
+const openAny = document.getElementById('openAny');
+
+function openPopup(serviceName = '') {
+  serviceField.value = serviceName;
+  overlay.style.display = 'flex';
+  // focus name input after short delay
+  setTimeout(()=> {
+    const nameInput = document.querySelector('#bookingForm [name="name"]');
+    if(nameInput) nameInput.focus();
+  }, 200);
+}
+function closePopup() {
+  overlay.style.display = 'none';
+  // reset form after short delay
+  setTimeout(()=> document.getElementById('bookingForm').reset(), 200);
+}
+
+// attach to every book button
+document.querySelectorAll('.book-btn').forEach(btn=>{
+  btn.addEventListener('click', ()=> openPopup(btn.dataset.service) );
+});
+
+// openAny opens form with empty service (user can choose)
+openAny.addEventListener('click', ()=> openPopup('') );
+closeBtn.addEventListener('click', closePopup);
+overlay.addEventListener('click', (e)=> { if(e.target === overlay) closePopup(); } );
+
+// Form submit with fetch to Web3Forms
+const form = document.getElementById('bookingForm');
+const successMsg = document.getElementById('successMsg');
+
+form.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const btn = form.querySelector('.submit-btn');
+  btn.disabled = true;
+  const formData = new FormData(form);
+
+  // Build payload for Web3Forms (they accept FormData or JSON)
+  try {
+    const resp = await fetch('https://api.web3forms.com/submit', {
+      method: 'POST',
+      body: formData
+    });
+    const result = await resp.json();
+    if(result.success) {
+      // show success
+      successMsg.style.display = 'block';
+      btn.style.display = 'none';
+
+      // Close popup after short delay
+      setTimeout(()=>{
+        successMsg.style.display = 'none';
+        btn.style.display = 'block';
+        btn.disabled = false;
+        closePopup();
+        alert('Thank you! Booking sent — we will contact you soon.');
+      }, 2200);
+    } else {
+      throw new Error('Submission failed');
+    }
+  } catch (err) {
+    console.error(err);
+    alert('Sorry, submission failed. Please try again or contact teamtuloo@gmail.com directly.');
+    btn.disabled = false;
+  }
+});
+
+// Career popup controls
+const careerOverlay = document.getElementById('careerOverlay');
+const careerCloseBtn = document.getElementById('careerCloseBtn');
+const openCareer = document.getElementById('openCareer');
+
+function openCareerPopup() {
+  careerOverlay.style.display = 'flex';
+  // focus name input after short delay
+  setTimeout(()=> {
+    const nameInput = document.querySelector('#careerForm [name="name"]');
+    if(nameInput) nameInput.focus();
+  }, 200);
+}
+function closeCareerPopup() {
+  careerOverlay.style.display = 'none';
+  // reset form after short delay
+  setTimeout(()=> document.getElementById('careerForm').reset(), 200);
+}
+
+// attach to career link
+openCareer.addEventListener('click', openCareerPopup);
+careerCloseBtn.addEventListener('click', closeCareerPopup);
+careerOverlay.addEventListener('click', (e)=> { if(e.target === careerOverlay) closeCareerPopup(); } );
+
+// Reviews popup controls
+const reviewsOverlay = document.getElementById('reviewsOverlay');
+const reviewsCloseBtn = document.getElementById('reviewsCloseBtn');
+const openReviews = document.getElementById('openReviews');
+const leaveReviewBtn = document.getElementById('leaveReviewBtn');
+
+function openReviewsPopup() {
+  reviewsOverlay.style.display = 'flex';
+}
+function closeReviewsPopup() {
+  reviewsOverlay.style.display = 'none';
+}
+
+// attach to reviews button
+openReviews.addEventListener('click', openReviewsPopup);
+reviewsCloseBtn.addEventListener('click', closeReviewsPopup);
+reviewsOverlay.addEventListener('click', (e)=> { if(e.target === reviewsOverlay) closeReviewsPopup(); } );
+
+// Leave review popup controls
+const leaveReviewOverlay = document.getElementById('leaveReviewOverlay');
+const leaveReviewCloseBtn = document.getElementById('leaveReviewCloseBtn');
+
+function openLeaveReviewPopup() {
+  leaveReviewOverlay.style.display = 'flex';
+  // focus name input after short delay
+  setTimeout(()=> {
+    const nameInput = document.querySelector('#leaveReviewForm [name="name"]');
+    if(nameInput) nameInput.focus();
+  }, 200);
+}
+function closeLeaveReviewPopup() {
+  leaveReviewOverlay.style.display = 'none';
+  // reset form after short delay
+  setTimeout(()=> document.getElementById('leaveReviewForm').reset(), 200);
+}
+
+// attach to leave review button
+leaveReviewBtn.addEventListener('click', openLeaveReviewPopup);
+leaveReviewCloseBtn.addEventListener('click', closeLeaveReviewPopup);
+leaveReviewOverlay.addEventListener('click', (e)=> { if(e.target === leaveReviewOverlay) closeLeaveReviewPopup(); } );
+
+// Leave review form submit
+const leaveReviewForm = document.getElementById('leaveReviewForm');
+const leaveReviewSuccessMsg = document.getElementById('leaveReviewSuccessMsg');
+
+leaveReviewForm.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const btn = leaveReviewForm.querySelector('.submit-btn');
+  btn.disabled = true;
+  const formData = new FormData(leaveReviewForm);
+
+  try {
+    const resp = await fetch('https://api.web3forms.com/submit', {
+      method: 'POST',
+      body: formData
+    });
+    const result = await resp.json();
+    if(result.success) {
+      // show success
+      leaveReviewSuccessMsg.style.display = 'block';
+      btn.style.display = 'none';
+
+      // Add the new review to the list
+      const name = formData.get('name');
+      const service = formData.get('service');
+      const rating = formData.get('rating');
+      const description = formData.get('description');
+      const stars = '⭐'.repeat(parseInt(rating));
+      const reviewDiv = document.createElement('div');
+      reviewDiv.style.background = 'var(--card)';
+      reviewDiv.style.padding = '16px';
+      reviewDiv.style.borderRadius = '8px';
+      reviewDiv.style.marginBottom = '12px';
+      reviewDiv.style.boxShadow = '0 2px 8px rgba(0,0,0,0.1)';
+      reviewDiv.innerHTML = `
+        <div style="font-size:18px;margin-bottom:8px">${stars}</div>
+        <p style="color:var(--muted);margin:8px 0">"${description}"</p>
+        <div style="font-weight:600">- ${name} (${service})</div>
+      `;
+      const reviewsList = document.getElementById('reviewsList');
+      reviewsList.insertBefore(reviewDiv, reviewsList.firstChild);
+
+      // Close popup after short delay
+      setTimeout(()=>{
+        leaveReviewSuccessMsg.style.display = 'none';
+        btn.style.display = 'block';
+        btn.disabled = false;
+        closeLeaveReviewPopup();
+        alert('Thank you! Your review has been submitted.');
+      }, 2200);
+    } else {
+      throw new Error('Submission failed');
+    }
+  } catch (err) {
+    console.error(err);
+    alert('Sorry, submission failed. Please try again or contact teamtuloo@gmail.com directly.');
+    btn.disabled = false;
+  }
+});
+
+// Career form submit
+const careerForm = document.getElementById('careerForm');
+const careerSuccessMsg = document.getElementById('careerSuccessMsg');
+
+careerForm.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const btn = careerForm.querySelector('.submit-btn');
+  btn.disabled = true;
+  const formData = new FormData(careerForm);
+
+  try {
+    const resp = await fetch('https://api.web3forms.com/submit', {
+      method: 'POST',
+      body: formData
+    });
+    const result = await resp.json();
+    if(result.success) {
+      // show success
+      careerSuccessMsg.style.display = 'block';
+      btn.style.display = 'none';
+
+      // Close popup after short delay
+      setTimeout(()=>{
+        careerSuccessMsg.style.display = 'none';
+        btn.style.display = 'block';
+        btn.disabled = false;
+        closeCareerPopup();
+        alert('Thank you! Application sent — we will contact you soon.');
+      }, 2200);
+    } else {
+      throw new Error('Submission failed');
+    }
+  } catch (err) {
+    console.error(err);
+    alert('Sorry, submission failed. Please try again or contact teamtuloo@gmail.com directly.');
+    btn.disabled = false;
+  }
+});
+
+// Typing effect
+const typingText = document.getElementById('typing-text');
+const text = "Your one-stop solution for all services!\nBook with ease and get instant responses.";
+let index = 0;
+
+function typeWriter() {
+  if (index < text.length) {
+    if (text.charAt(index) === '\n') {
+      typingText.innerHTML += '<br>';
+    } else {
+      typingText.innerHTML += text.charAt(index);
+    }
+    index++;
+    setTimeout(typeWriter, 100);
+  }
+}
+
+window.addEventListener('load', () => {
+  setTimeout(typeWriter, 100);
+});
+</script>
+</body>
+</html>
